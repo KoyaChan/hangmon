@@ -46,13 +46,17 @@ USHORT CTargetProcess::IsLiving()
 	if (!SendMessageTimeout(m_hWnd, WM_NULL, NULL, NULL, SMTO_ABORTIFHUNG, 5000, &pdwResult))
 	{
 		int ec = GetLastError();
-		if (ec == ERROR_TIMEOUT)
+		// it is observed ERROR_INVALID_PARAMETER is got while NotMyFault.exe can't be killed
+		switch (ec)
 		{
+		case ERROR_INVALID_PARAMETER:
 			return PROCESS_HANGING;
-		}
-		else if (ec == ERROR_INVALID_WINDOW_HANDLE)
-		{
+		case ERROR_TIMEOUT:
+			return PROCESS_HANGING;
+		case ERROR_INVALID_WINDOW_HANDLE:
 			return PROCESS_DEAD;
+		default:
+			return PROCESS_LIVING;
 		}
 	}
 
