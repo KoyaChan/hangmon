@@ -20,15 +20,6 @@ BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
-TCHAR g_szMessage[MAX_PATH];
-
-DWORD WINAPI StatusCheckerThread(LPVOID vdParam)
-{
-	CStatusChecker* pcStatusChecker = (CStatusChecker*)vdParam;
-	pcStatusChecker->StartMonitor();
-	return 0;
-}
-
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
                      _In_ LPWSTR    lpCmdLine,
@@ -133,7 +124,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	static CStatusChecker cStatusChecker;
 	HANDLE hThread = NULL;
 
-
     switch (message)
     {
 	case WM_CREATE:
@@ -149,9 +139,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 		if (!hThread)
 		{
-			_tprintf(_T("failed to create thread, ec[%d]"), GetLastError());
-			PostQuitMessage(0);
-			return 1;
+			cStatusChecker.DisplayStatus((PTCHAR)L"CreateThread failed. Stopping ...");
+			Sleep(10000);
+			DestroyWindow(hWnd);
 		}
 		
 		break;

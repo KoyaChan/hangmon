@@ -80,7 +80,7 @@ DWORD CTargetProcess::GetPidFromCommandLine()
 	return _tstoi(Argv[1]);
 }
 
-
+// Get process name from the pid in m_dwPid
 int CTargetProcess::GetProcessName(wchar_t* szProcessName, USHORT size)
 {
 	if (m_strName.empty())
@@ -122,7 +122,7 @@ int CTargetProcess::GetProcessName(wchar_t* szProcessName, USHORT size)
 int CTargetProcess::Init(DWORD dwPid)
 {
 	m_dwPid = dwPid; 
-	if (GetWindowHandleByPid())
+	if (GetWindowHandleByPid())  // Set window handle to m_hWnd
 	{
 		return -1;
 	}

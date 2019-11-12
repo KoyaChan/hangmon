@@ -2,6 +2,12 @@
 #include "CStatusChecker.h"
 #include "CTargetProcess.h"
 
+DWORD WINAPI StatusCheckerThread(LPVOID vdParam)
+{
+	CStatusChecker* pcStatusChecker = (CStatusChecker*)vdParam;
+	pcStatusChecker->StartMonitor();
+	return 0;
+}
 
 CStatusChecker::CStatusChecker()
 	:m_hWnd(NULL)
@@ -9,7 +15,6 @@ CStatusChecker::CStatusChecker()
 	,m_pcTargetProcess(NULL)
 {
 }
-
 
 CStatusChecker::~CStatusChecker()
 {
@@ -21,7 +26,9 @@ int CStatusChecker::StartMonitor()
 	static TCHAR szDead[] = L"Process Window not found";
 	static TCHAR szHang[] = L"!!!!! PROCESS HANGING !!!!!";
 
+	// give PID and Process name to MessageMaker to print them in the message
 	m_pcMessageMaker->SetPid(m_pcTargetProcess->GetPid());
+
 	TCHAR szProcessName[MAX_PATH] = { 0 };
 	m_pcTargetProcess->GetProcessName(szProcessName, MAX_PATH);
 	m_pcMessageMaker->SetProcessName((PTCHAR)szProcessName);
@@ -42,6 +49,7 @@ int CStatusChecker::StartMonitor()
 			DisplayStatus(szHang);
 			break;
 		default:
+			// remain the status to szLiving
 			break;
 		}
 		Sleep(1000);
@@ -60,8 +68,9 @@ void CStatusChecker::Init(HWND& hWnd, CTargetProcess* pcTargetProcess, CMessageM
 
 int CStatusChecker::DisplayStatus(PTCHAR pszStatus)
 {
-	m_pcMessageMaker->SetStatus(pszStatus);
+	m_pcMessageMaker->SetStatus(pszStatus);	 // This status is used in WinProc WM_PAINT
 
+	// Display message to the main window
 	HDC hDC = GetDC(m_hWnd);
 	TCHAR szMessage[MAX_PATH] = { 0 };
 	TextOut(hDC, 10, 30, m_pcMessageMaker->MakeMessage(szMessage, MAX_PATH), MAX_PATH);

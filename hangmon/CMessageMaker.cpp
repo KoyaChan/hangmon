@@ -1,11 +1,12 @@
 #include "stdafx.h"
 #include "CMessageMaker.h"
 
+static TCHAR szNoStatus[] = L"Status Not Set";
 
 CMessageMaker::CMessageMaker()
 	:m_strPid(wstring(L"0"))
 	,m_strProcessName(wstring(L""))
-	,m_szStatus((PTCHAR)L"Status Not Set")
+	,m_szStatus((PTCHAR)szNoStatus)
 {
 }
 

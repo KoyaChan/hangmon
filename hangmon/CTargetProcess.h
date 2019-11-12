@@ -3,8 +3,8 @@
 using namespace std;
 
 #define PROCESS_LIVING 0
-#define PROCESS_DEAD   2
 #define PROCESS_HANGING 1
+#define PROCESS_DEAD   2
 
 class CTargetProcess
 {

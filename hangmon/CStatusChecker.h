@@ -2,6 +2,8 @@
 #include "CMessageMaker.h"
 #include "CTargetProcess.h"
 
+DWORD WINAPI StatusCheckerThread(LPVOID vdParam);
+
 class CStatusChecker
 {
 public:
