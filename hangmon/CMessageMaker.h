@@ -8,18 +8,18 @@ class CMessageMaker
 public:
 	CMessageMaker();
 	~CMessageMaker();
+	void SetStatus(int iStatus);
+	void SetHandlerStatus(PTCHAR szStatus);
+	void SetPid(const DWORD dwPid);
+	void SetProcessName(const PTCHAR pszProcessName);
+	void SetExtraMessage(const wchar_t* szMessage);
+	void DisplayMessage(const HDC hdc);
+
 private:
 	wstring m_strProcessName;
 	wstring m_strPid;
-	PTCHAR m_szStatus;
-public:
-	void SetPid(DWORD pid);
-	void SetProcessName(PTCHAR pszProcessName);
-	void SetStatus(PTCHAR pszStatus);
-	PTCHAR MakeMessage(PTCHAR szMessage, USHORT size);
-private:
-	wchar_t m_szHandlerStatus[HANDLER_STATUS_SIZE];
-public:
-	void SetHandlerStatus(PTCHAR szStatus);
+	wstring m_strHandlerStatus;
+	int m_iStatus;
+	wstring m_strExtraMessage;
 };
 

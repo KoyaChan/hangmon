@@ -36,26 +36,17 @@ int CStatusChecker::StartMonitor()
 
 	CHangHandler cHangHandler(m_pcMessageMaker);
 
-	USHORT usStatus = PROCESS_LIVING;
-	while (usStatus == PROCESS_LIVING)
+	int iStatus = PROCESS_LIVING;
+	while (iStatus == PROCESS_LIVING)
 	{
-		usStatus = m_pcTargetProcess->IsLiving();
-		switch (usStatus)
+		iStatus = m_pcTargetProcess->IsLiving();
+		DisplayStatus(iStatus);
+
+		if (iStatus == PROCESS_HANGING)
 		{
-		case PROCESS_LIVING:
-			DisplayStatus(szLiving);
-			break;
-		case PROCESS_DEAD:
-			DisplayStatus(szDead);
-			break;
-		case PROCESS_HANGING:
-			DisplayStatus(szHang);
 			cHangHandler.Invoke();
-			break;
-		default:
-			// remain the status to szLiving
-			break;
 		}
+
 		Sleep(1000);
 	}
 	return 0;
@@ -70,15 +61,25 @@ void CStatusChecker::Init(HWND& hWnd, CTargetProcess* pcTargetProcess, CMessageM
 }
 
 
-int CStatusChecker::DisplayStatus(PTCHAR pszStatus)
+void CStatusChecker::DisplayStatus(int iStatus)
 {
-	m_pcMessageMaker->SetStatus(pszStatus);	 // This status is used in WinProc WM_PAINT
+	m_pcMessageMaker->SetStatus(iStatus);	 // This status is used in WinProc WM_PAINT
 
+	DisplayMessage();
+}
+
+
+void CStatusChecker::DisplayMessage(const wchar_t* szMessage)
+{
+	m_pcMessageMaker->SetExtraMessage(szMessage);
+	DisplayMessage();
+
+}
+
+void CStatusChecker::DisplayMessage()
+{
 	// Display message to the main window
 	HDC hDC = GetDC(m_hWnd);
-	TCHAR szMessage[MAX_PATH] = { 0 };
-	TextOut(hDC, 10, 30, m_pcMessageMaker->MakeMessage(szMessage, MAX_PATH), MAX_PATH);
+	m_pcMessageMaker->DisplayMessage(hDC);
 	ReleaseDC(m_hWnd, hDC);
-
-	return 0;
 }

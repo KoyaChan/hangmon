@@ -62,7 +62,7 @@ int CHangHandler::FindHandler()
 
 	m_strHandlerCmd = szHandlerPath;
 
-	wstring strMessage = L"Handler : ";
+	wstring strMessage = L"Hang Handler : ";
 	strMessage += m_strHandlerCmd;
 	m_pcMessageMaker->SetHandlerStatus((PTCHAR)strMessage.c_str());
 	m_strHandlerCmd = szHandlerPath;

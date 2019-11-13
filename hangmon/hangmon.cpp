@@ -139,7 +139,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 		if (!hThread)
 		{
-			cStatusChecker.DisplayStatus((PTCHAR)L"CreateThread failed. Stopping ...");
+			cStatusChecker.DisplayMessage(L"CreateThread failed. Stopping ...");
 			Sleep(10000);
 			DestroyWindow(hWnd);
 		}
@@ -150,9 +150,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 		PAINTSTRUCT ps;
 		HDC hdc = BeginPaint(hWnd, &ps);
-		TCHAR szMessage[MAX_PATH] = { 0 };
-
-		TextOut(hdc, 10, 30, cMessageMaker.MakeMessage(szMessage, MAX_PATH), MAX_PATH);
+		cMessageMaker.DisplayMessage(hdc);
 		EndPaint(hWnd, &ps);
 		break;
 	}
