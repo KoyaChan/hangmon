@@ -130,6 +130,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 		DWORD dwPid = CTargetProcess::GetPidFromCommandLine();
 
+		if (!dwPid)
+		{
+			cMessageMaker.SetExtraMessage(L"Usage : hangmon <pid> [<hang handler name>]");
+		}
+
 		cTargetProcess.Init(dwPid);
 		
 		cStatusChecker.Init(hWnd, &cTargetProcess, &cMessageMaker);
@@ -139,9 +144,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 		if (!hThread)
 		{
-			cStatusChecker.DisplayMessage(L"CreateThread failed. Stopping ...");
-			Sleep(10000);
-			DestroyWindow(hWnd);
+			cMessageMaker.SetExtraMessage(L"CreateThread failed. hangmon doesn't work.");
 		}
 		
 		break;

@@ -51,14 +51,16 @@ void CMessageMaker::DisplayMessage(HDC hdc)
 	StatusMap mpStatus;
 	mpStatus.insert(StatusMap::value_type(PROCESS_LIVING, (wchar_t*)L"Living"));
 	mpStatus.insert(StatusMap::value_type(PROCESS_HANGING, (wchar_t*)L"Hanging"));
-	mpStatus.insert(StatusMap::value_type(PROCESS_DEAD, (wchar_t*)L"Process Not Found"));
+	mpStatus.insert(StatusMap::value_type(PROCESS_DEAD, (wchar_t*)L"Process Window Not Found"));
 
 	size_t mergin = 5;
 	size_t y = 0;
 	if (!m_strExtraMessage.empty())
 	{
 		y += tm.tmHeight + mergin;
+		SetTextColor(hdc, RGB(0xff, 0, 0));
 		TextOut(hdc, 10, y, m_strExtraMessage.c_str(), m_strExtraMessage.size());
+		y += tm.tmHeight;
 	}
 
 	y += tm.tmHeight + mergin;
@@ -84,7 +86,7 @@ void CMessageMaker::DisplayMessage(HDC hdc)
 	TextOut(hdc, 10, y, strLine.c_str(), strLine.size());
 
 	y += tm.tmHeight + mergin;
-	strLine = L"Name : ";
+	strLine = L"";
 	strLine += m_strProcessName;
 	TextOut(hdc, 10, y, strLine.c_str(), strLine.size());
 
