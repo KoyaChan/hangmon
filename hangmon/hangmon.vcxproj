@@ -144,9 +144,11 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CHangHandler.h" />
     <ClInclude Include="CMessageMaker.h" />
     <ClInclude Include="CStatusChecker.h" />
     <ClInclude Include="CTargetProcess.h" />
@@ -156,6 +158,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CHangHandler.cpp" />
     <ClCompile Include="CMessageMaker.cpp" />
     <ClCompile Include="CStatusChecker.cpp" />
     <ClCompile Include="CTargetProcess.cpp" />

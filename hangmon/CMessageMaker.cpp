@@ -41,3 +41,9 @@ PTCHAR CMessageMaker::MakeMessage(PTCHAR szMessage, USHORT size)
 	swprintf_s(szMessage, size, _T("%s  PID[%s]  %s"), m_szStatus, m_strPid.c_str(), m_strProcessName.c_str());
 	return szMessage;
 }
+
+
+void CMessageMaker::SetHandlerStatus(PTCHAR szStatus)
+{
+	wcscpy_s(m_szHandlerStatus, HANDLER_STATUS_SIZE, szStatus);
+}

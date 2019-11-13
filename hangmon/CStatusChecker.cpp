@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CStatusChecker.h"
 #include "CTargetProcess.h"
+#include "CHangHandler.h"
 
 DWORD WINAPI StatusCheckerThread(LPVOID vdParam)
 {
@@ -33,6 +34,8 @@ int CStatusChecker::StartMonitor()
 	m_pcTargetProcess->GetProcessName(szProcessName, MAX_PATH);
 	m_pcMessageMaker->SetProcessName((PTCHAR)szProcessName);
 
+	CHangHandler cHangHandler(m_pcMessageMaker);
+
 	USHORT usStatus = PROCESS_LIVING;
 	while (usStatus == PROCESS_LIVING)
 	{
@@ -47,6 +50,7 @@ int CStatusChecker::StartMonitor()
 			break;
 		case PROCESS_HANGING:
 			DisplayStatus(szHang);
+			cHangHandler.Invoke();
 			break;
 		default:
 			// remain the status to szLiving
