@@ -38,7 +38,7 @@ int CTargetProcess::GetWindowHandleByPid()
 	return -1;
 }
 
-// check if the target window receives WM_NULL in 5000 seconds
+// check if the target window receives WM_NULL in 5000 milli seconds
 USHORT CTargetProcess::IsLiving()
 {
 	DWORD_PTR pdwResult;
